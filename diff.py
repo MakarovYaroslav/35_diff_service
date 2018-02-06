@@ -1,69 +1,44 @@
-#!/usr/bin/python
-"""HTML Diff: http://www.aaronsw.com/2002/diff
-Rough code, badly documented. Send me comments and patches."""
+import difflib
 
-__author__ = 'Aaron Swartz <me@aaronsw.com>'
-__copyright__ = '(C) 2003 Aaron Swartz. GNU GPL 2 or 3.'
-__version__ = '0.22'
 
-import difflib, string
-
-def isTag(x): return x[0] == "<" and x[-1] == ">"
-
-def textDiff(a, b):
-    """Takes in strings a and b and returns a human-readable HTML diff."""
-
+def html_diff(html_text1, html_text2, config):
     out = []
-    a, b = html2list(a), html2list(b)
-    try: # autojunk can cause malformed HTML, but also speeds up processing.
-        s = difflib.SequenceMatcher(None, a, b, autojunk=False)
-    except TypeError:
-        s = difflib.SequenceMatcher(None, a, b)
-    for e in s.get_opcodes():
-        if e[0] == "replace":
-            # @@ need to do something more complicated here
-            # call textDiff but not for html, but for some html... ugh
-            # gonna cop-out for now
-            out.append('<del class="diff modified">'+''.join(a[e[1]:e[2]]) + '</del><ins class="diff modified">'+''.join(b[e[3]:e[4]])+"</ins>")
-        elif e[0] == "delete":
-            out.append('<del class="diff">'+ ''.join(a[e[1]:e[2]]) + "</del>")
-        elif e[0] == "insert":
-            out.append('<ins class="diff">'+''.join(b[e[3]:e[4]]) + "</ins>")
-        elif e[0] == "equal":
-            out.append(''.join(b[e[3]:e[4]]))
-        else: 
-            raise "Um, something's broken. I didn't expect a '" + `e[0]` + "'."
-    return ''.join(out)
-
-def html2list(x, b=0):
-    mode = 'char'
-    cur = ''
-    out = []
-    for c in x:
-        if mode == 'tag':
-            if c == '>': 
-                if b: cur += ']'
-                else: cur += c
-                out.append(cur); cur = ''; mode = 'char'
-            else: cur += c
-        elif mode == 'char':
-            if c == '<': 
-                out.append(cur)
-                if b: cur = '['
-                else: cur = c
-                mode = 'tag'
-            elif c in string.whitespace: out.append(cur+c); cur = ''
-            else: cur += c
-    out.append(cur)
-    return filter(lambda x: x is not '', out)
-
-if __name__ == '__main__':
-    import sys
+    text1 = [line.strip() for line in html_text1]
+    text2 = [line.strip() for line in html_text2]
     try:
-        a, b = sys.argv[1:3]
-    except ValueError:
-        print "htmldiff: highlight the differences between two html files"
-        print "usage: " + sys.argv[0] + " a b"
-        sys.exit(1)
-    print textDiff(open(a).read(), open(b).read())
-    
+        compare_data = difflib.SequenceMatcher(None, text1,
+                                               text2, autojunk=False)
+    except TypeError:
+        compare_data = difflib.SequenceMatcher(None, text1, text2)
+    for opcode, *positions in compare_data.get_opcodes():
+        if opcode == "replace":
+            out.append('<{0} class="{1}">{2}</{0}>'
+                       '<{3} class="{4}">{5}</{3}>'.format(
+                           config['remove_element'],
+                           config['remove_class'],
+                           ''.join(
+                               text1[positions[0]:positions[1]]),
+                           config['add_element'],
+                           config['add_class'],
+                           ''.join(
+                               text2[positions[2]:positions[3]])))
+        elif opcode == "delete":
+            out.append('<{0} class="{1}">{2}</{0}>'.format(
+                config['remove_element'],
+                config['remove_class'],
+                ''.join(text1[positions[0]:positions[1]])))
+        elif opcode == "insert":
+            out.append('<{0} class="{1}">{2}</{0}>'.format(
+                config['add_element'],
+                config['add_class'],
+                ''.join(text2[positions[2]:positions[3]])))
+        elif opcode == "equal":
+            if positions[:2] == positions[2:4]:
+                out.append('{0}'.format(''.join(
+                    text2[positions[2]:positions[3]])))
+            else:
+                out.append('<{0} class="{1}">{2}</{0}>'.format(
+                    config['moved_element'],
+                    config['moved_class'],
+                    ''.join(text2[positions[2]:positions[3]])))
+    return ''.join(out)
