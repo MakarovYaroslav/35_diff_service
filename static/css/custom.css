@@ -1,0 +1,22 @@
+.form{
+  margin-top: 30px;
+}
+.startbutton{
+  margin-top: 30px;
+}
+.results{
+  margin-top: 60px;
+}
+.results ul{
+  list-style: none;
+  margin-right:35px;
+}
+.red{
+  color:red;
+}
+.yellow{
+  color:yellow;
+}
+.green{
+  color:green;
+}
