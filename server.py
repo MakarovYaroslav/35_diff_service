@@ -15,8 +15,8 @@ def filetype_is_allowed(filename):
 
 @app.route('/')
 def main():
-        return render_template('index.html',
-                               result="Select files and click START button")
+    return render_template('index.html',
+                           result="Select files and click START button")
 
 
 @app.route('/diff', methods=['POST'])
