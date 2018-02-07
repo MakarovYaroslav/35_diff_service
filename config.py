@@ -1,7 +1,3 @@
-import tempfile
-tempdir = tempfile.gettempdir()
-
-
 class DiffConfig(object):
     DEBUG = False
     CONFIG = {
@@ -13,3 +9,7 @@ class DiffConfig(object):
         "moved_element": "span",
     }
     ALLOWED_EXTENSIONS = {'html'}
+
+
+class DevelopmentConfig(DiffConfig):
+    DEBUG = True
