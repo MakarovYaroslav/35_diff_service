@@ -16,13 +16,13 @@ def filetype_is_allowed(filename):
 @app.route('/')
 def main():
     return render_template('index.html',
-                           result="Select files and click START button")
+                           diffresult="Select files and click START button")
 
 
 @app.route('/diff', methods=['POST'])
 def api():
     if 'file1' not in request.files:
-        return render_template('index.html', result="Select source file!")
+        return render_template('index.html', diffresult="Select source file!")
     else:
         file1 = request.files['file1']
     if filetype_is_allowed(file1.filename):
@@ -30,9 +30,9 @@ def api():
                        for line in file1.readlines()]
     else:
         return render_template('index.html',
-                               result="Source file should be HTML!")
+                               diffresult="Source file should be HTML!")
     if 'file2' not in request.files:
-        return render_template('index.html', result="Select modified file!")
+        return render_template('index.html', diffresult="Select modified file!")
     else:
         file2 = request.files['file2']
     if filetype_is_allowed(file2.filename):
@@ -40,9 +40,9 @@ def api():
                        for line in file2.readlines()]
     else:
         return render_template('index.html',
-                               result="Modified file should be HTML!")
-    result = html_diff(file1_lines, file2_lines, app.config['CONFIG'])
-    return render_template('index.html', result=result)
+                               diffresult="Modified file should be HTML!")
+    diffresult = html_diff(file1_lines, file2_lines, app.config['CONFIG'])
+    return render_template('index.html', diffresult=diffresult)
 
 
 if __name__ == "__main__":
