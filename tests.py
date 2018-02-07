@@ -17,14 +17,13 @@ class TestHtmlDiff(unittest.TestCase):
                         '<li>Сумма: 126000 руб.</li>',
                         '<li>Дата: 26.12.14</li>']
         expected_diff = '<{0} class="{1}"><li>Автор: Григорьев П.А.</li>' \
-                        '</{0}><{2} class="{3}">{4}</{2}>' \
-                        '<li>Сумма: 126000 руб.</li>' \
-                        '<li>Дата: 26.12.14</li>'.format(
-                            self.base_config['remove_element'],
-                            self.base_config['remove_class'],
-                            self.base_config['add_element'],
-                            self.base_config['add_class'],
-                            replacement_string)
+            '</{0}><{2} class="{3}">{4}</{2}><li>Сумма: 126000 руб.</li>' \
+            '<li>Дата: 26.12.14</li>'.format(
+                self.base_config['remove_element'],
+                self.base_config['remove_class'],
+                self.base_config['add_element'],
+                self.base_config['add_class'],
+                replacement_string)
         received_diff = html_diff(self.basic_html, changed_html,
                                   self.base_config)
         self.assertEqual(expected_diff, received_diff)
@@ -33,12 +32,12 @@ class TestHtmlDiff(unittest.TestCase):
         changed_html = ['<li>Сумма: 126000 руб.</li>',
                         '<li>Дата: 26.12.14</li>']
         expected_diff = '<{0} class="{1}"><li>Автор: Григорьев П.А.</li>' \
-                        '</{0}><{2} class="{3}"><li>Сумма: 126000 руб.</li>'\
-                        '<li>Дата: 26.12.14</li></{2}>'.format(
-                            self.base_config['remove_element'],
-                            self.base_config['remove_class'],
-                            self.base_config['moved_element'],
-                            self.base_config['moved_class'])
+            '</{0}><{2} class="{3}"><li>Сумма: 126000 руб.</li>'\
+            '<li>Дата: 26.12.14</li></{2}>'.format(
+                self.base_config['remove_element'],
+                self.base_config['remove_class'],
+                self.base_config['moved_element'],
+                self.base_config['moved_class'])
         received_diff = html_diff(self.basic_html, changed_html,
                                   self.base_config)
         self.assertEqual(expected_diff, received_diff)
@@ -50,12 +49,11 @@ class TestHtmlDiff(unittest.TestCase):
                         '<li>Дата: 26.12.14</li>',
                         new_string]
         expected_diff = '<li>Автор: Григорьев П.А.</li>' \
-                        '<li>Сумма: 126000 руб.</li>' \
-                        '<li>Дата: 26.12.14</li>' \
-                        '<{0} class="{1}">{2}</{0}>'.format(
-                            self.base_config['add_element'],
-                            self.base_config['add_class'],
-                            new_string)
+            '<li>Сумма: 126000 руб.</li><li>Дата: 26.12.14</li>' \
+            '<{0} class="{1}">{2}</{0}>'.format(
+                self.base_config['add_element'],
+                self.base_config['add_class'],
+                new_string)
         received_diff = html_diff(self.basic_html, changed_html,
                                   self.base_config)
         self.assertEqual(expected_diff, received_diff)
@@ -83,17 +81,15 @@ class TestTagCreation(unittest.TestCase):
 
     def test_replace_tag_creation(self):
         expected_tag = '<{0} class="{1}">{2}</{0}>' \
-                       '<{3} class="{4}">{5}</{3}>'.format(
-                           self.base_config['remove_element'],
-                           self.base_config['remove_class'],
-                           ''.join(self.basic_html[
-                                   self.base_positions[0]:
-                                   self.base_positions[1]]),
-                           self.base_config['add_element'],
-                           self.base_config['add_class'],
-                           ''.join(self.changed_html[
-                                   self.base_positions[2]:
-                                   self.base_positions[3]]))
+            '<{3} class="{4}">{5}</{3}>'.format(
+                self.base_config['remove_element'],
+                self.base_config['remove_class'],
+                ''.join(self.basic_html[self.base_positions[0]:
+                                        self.base_positions[1]]),
+                self.base_config['add_element'],
+                self.base_config['add_class'],
+                ''.join(self.changed_html[self.base_positions[2]:
+                                          self.base_positions[3]]))
         received_tag = create_replace_tag(self.basic_html,
                                           self.changed_html,
                                           self.base_config,
