@@ -11,12 +11,11 @@ def get_compare_data(text1, text2):
 
 
 def create_replace_tag(text1, text2, config, positions):
-    replace_tag = '<{0} class="{1}">{2}</{0}>' \
-                  '<{3} class="{4}">{5}</{3}>'.format(
-                      config['remove_element'], config['remove_class'],
-                      ''.join(text1[positions[0]:positions[1]]),
-                      config['add_element'], config['add_class'],
-                      ''.join(text2[positions[2]:positions[3]]))
+    replace_tag = '<{0} class="{1}">{2}</{0}><{3} class="{4}">{5}</{3}>'.format(
+                  config['remove_element'], config['remove_class'],
+                  ''.join(text1[positions[0]:positions[1]]),
+                  config['add_element'], config['add_class'],
+                  ''.join(text2[positions[2]:positions[3]]))
     return replace_tag
 
 
