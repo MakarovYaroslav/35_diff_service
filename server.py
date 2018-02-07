@@ -1,10 +1,19 @@
 from flask import Flask, render_template, request
-from config import DiffConfig
 from diff import html_diff
 
 app = Flask(__name__)
 
-app.config.from_object(DiffConfig)
+
+app.config['DEBUG'] = False
+app.config['CONFIG'] = {
+    "add_class": "green",
+    "add_element": "span",
+    "remove_class": "red",
+    "remove_element": "span",
+    "moved_class": "yellow",
+    "moved_element": "span",
+}
+app.config['ALLOWED_EXTENSIONS'] = {'html'}
 
 
 def filetype_is_allowed(filename):
