@@ -13,8 +13,8 @@ def main():
                            diffresult="Select files and click START button")
 
 
-@app.route('/diff', methods=['POST'])
-def api():
+@app.route('/difffile', methods=['POST'])
+def diff_file():
     if 'file1' not in request.files:
         return render_template('index.html', diffresult="Select source file!")
     else:
@@ -37,6 +37,20 @@ def api():
         return render_template('index.html',
                                diffresult="Modified file should be HTML!")
     diffresult = html_diff(file1_lines, file2_lines, app.config['CONFIG'])
+    return render_template('index.html', diffresult=diffresult)
+
+
+@app.route('/difftext', methods=['POST'])
+def diff_text():
+    source_html = request.form['sourcehtml']
+    modified_html = request.form['modifiedhtml']
+    if not source_html:
+        return render_template('index.html', diffresult="Source HTML is empty")
+    if not modified_html:
+        return render_template('index.html', diffresult="Modified HTML is empty")
+    source_lines = source_html.split('\n')
+    modified_lines = modified_html.split('\n')
+    diffresult = html_diff(source_lines, modified_lines, app.config['CONFIG'])
     return render_template('index.html', diffresult=diffresult)
 
 
