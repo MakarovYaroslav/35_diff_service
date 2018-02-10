@@ -1,7 +1,7 @@
 import unittest
-from server import app, filetype_is_allowed
+from server import app
 from diff import html_diff, create_replace_tag, create_delete_tag,\
-    create_insert_tag, create_equal_tag
+    create_insert_tag, create_equal_tag, filetype_is_allowed
 
 
 class TestHtmlDiff(unittest.TestCase):
@@ -138,7 +138,7 @@ class TestTagCreation(unittest.TestCase):
 
 class TestFileTypeCheck(unittest.TestCase):
     def setUp(self):
-        self.file_types = ['html', 'txt', 'json']
+        self.file_types = ['.html', '.txt', '.json']
         self.allowed_types = app.config['ALLOWED_EXTENSIONS']
 
     def test_file_type_check(self):
