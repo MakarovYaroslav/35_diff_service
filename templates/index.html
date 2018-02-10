@@ -68,9 +68,15 @@
                       </div>
                   </form>
                   <div class="col-xs-12 col-lg-12 text-center results">
+                  {% if error %}
+                  <h3>Error:</h3>
+                  <br>
+                  <h4>{{ error }}</h4>
+                  {% else %}
                   <h3>Results:</h3>
                   <br>
                   <h4>{{ diffresult|safe }}</h4>
+                  {% endif %}
                   </div>
           </div>
           <div class="col-xs-0 col-lg-2"></div>
