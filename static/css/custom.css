@@ -1,11 +1,14 @@
 .form{
   margin-top: 30px;
 }
+.ortext{
+  margin-top: 110px;
+}
 .startbutton{
   margin-top: 30px;
 }
 .results{
-  margin-top: 60px;
+  margin-top: 40px;
 }
 .results ul{
   list-style: none;

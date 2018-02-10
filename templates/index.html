@@ -31,7 +31,7 @@
       <div class="row">
           <div class="col-xs-0 col-lg-2"></div>
           <div class="col-xs-12 col-lg-8">
-                  <form action="/diff" method=post enctype=multipart/form-data class="fileform">
+                  <form action="/difffile" method=post enctype=multipart/form-data class="fileform">
                       <div class="col-xs-12 col-lg-12">
                       <div class="col-xs-6 col-lg-6 text-center">
                       <label class="btn btn-primary" for="my-file-selector">
@@ -49,6 +49,20 @@
                       </div>
                       </div>
                       <br>
+                      <div class="col-xs-12 col-lg-12 text-center">
+                      <input class="btn btn-success startbutton" type=submit value="START Diff">
+                      </div>
+                  </form>
+                  <h2 class="text-center ortext">OR...</h2>
+                  <form action="/difftext" method=post enctype=multipart/form-data class="textform">
+                      <div class="col-xs-6 col-lg-6">
+                          <label for="sourcehtml">Source HTML:</label>
+                          <textarea class="form-control" rows="5" id="sourcehtml" name="sourcehtml"></textarea>
+                      </div>
+                      <div class="col-xs-6 col-lg-6">
+                          <label for="modifiedhtml">Modified HTML:</label>
+                          <textarea class="form-control" rows="5" id="modifiedhtml" name="modifiedhtml"></textarea>
+                      </div>
                       <div class="col-xs-12 col-lg-12 text-center">
                       <input class="btn btn-success startbutton" type=submit value="START Diff">
                       </div>
