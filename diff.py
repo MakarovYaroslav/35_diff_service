@@ -1,11 +1,11 @@
 import difflib
 import os
+import server
 
 
 def filetype_is_allowed(filename):
-    from server import app
     filetype = os.path.splitext(filename)[1]
-    return filetype in app.config['ALLOWED_EXTENSIONS']
+    return filetype in server.app.config['ALLOWED_EXTENSIONS']
 
 
 def get_compare_data(text1, text2):

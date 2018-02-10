@@ -1,10 +1,10 @@
 from flask import Flask, render_template, request
-from diff import html_diff, filetype_is_allowed
-from config import DevelopmentConfig
+import diff
+from config import ProductionConfig
 
 app = Flask(__name__)
 
-app.config.from_object(DevelopmentConfig)
+app.config.from_object(ProductionConfig)
 
 
 @app.route('/')
@@ -19,7 +19,7 @@ def diff_file():
         return render_template('index.html', error="Select source file!")
     else:
         file1 = request.files['file1']
-    if filetype_is_allowed(file1.filename):
+    if diff.filetype_is_allowed(file1.filename):
         file1_lines = [str(line, encoding='utf-8')
                        for line in file1.readlines()]
     else:
@@ -29,13 +29,13 @@ def diff_file():
         return render_template('index.html', error="Select modified file!")
     else:
         file2 = request.files['file2']
-    if filetype_is_allowed(file2.filename):
+    if diff.filetype_is_allowed(file2.filename):
         file2_lines = [str(line, encoding='utf-8')
                        for line in file2.readlines()]
     else:
         return render_template('index.html',
                                error="Modified file should be HTML!")
-    diffresult = html_diff(file1_lines, file2_lines, app.config['CONFIG'])
+    diffresult = diff.html_diff(file1_lines, file2_lines, app.config['CONFIG'])
     return render_template('index.html', diffresult=diffresult)
 
 
@@ -49,7 +49,7 @@ def diff_text():
         return render_template('index.html', error="Modified HTML is empty")
     source_lines = source_html.split('\n')
     modified_lines = modified_html.split('\n')
-    diffresult = html_diff(source_lines, modified_lines, app.config['CONFIG'])
+    diffresult = diff.html_diff(source_lines, modified_lines, app.config['CONFIG'])
     return render_template('index.html', diffresult=diffresult)
 
 
