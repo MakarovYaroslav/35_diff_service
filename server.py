@@ -1,25 +1,10 @@
 from flask import Flask, render_template, request
-from diff import html_diff
+from diff import html_diff, filetype_is_allowed
+from config import DevelopmentConfig
 
 app = Flask(__name__)
 
-
-app.config['DEBUG'] = False
-app.config['CONFIG'] = {
-    "add_class": "green",
-    "add_element": "span",
-    "remove_class": "red",
-    "remove_element": "span",
-    "moved_class": "yellow",
-    "moved_element": "span",
-}
-app.config['ALLOWED_EXTENSIONS'] = {'html'}
-
-
-def filetype_is_allowed(filename):
-    maxsplit = 1
-    return '.' in filename and \
-           filename.rsplit('.', maxsplit)[1] in app.config['ALLOWED_EXTENSIONS']
+app.config.from_object(DevelopmentConfig)
 
 
 @app.route('/')
@@ -41,7 +26,8 @@ def api():
         return render_template('index.html',
                                diffresult="Source file should be HTML!")
     if 'file2' not in request.files:
-        return render_template('index.html', diffresult="Select modified file!")
+        return render_template('index.html',
+                               diffresult="Select modified file!")
     else:
         file2 = request.files['file2']
     if filetype_is_allowed(file2.filename):
