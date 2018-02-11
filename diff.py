@@ -10,8 +10,7 @@ def filetype_is_allowed(filename):
 
 def get_compare_data(text1, text2):
     try:
-        compare_data = difflib.SequenceMatcher(None, text1,
-                                               text2, autojunk=False)
+        compare_data = difflib.SequenceMatcher(None, text1, text2, autojunk=False)
     except TypeError:
         compare_data = difflib.SequenceMatcher(None, text1, text2)
     return compare_data
@@ -19,24 +18,27 @@ def get_compare_data(text1, text2):
 
 def create_replace_tag(text1, text2, config, positions):
     replace_tag = '<{0} class="{1}">{2}</{0}><{3} class="{4}">{5}</{3}>'.format(
-                  config['remove_element'], config['remove_class'],
-                  ''.join(text1[positions[0]:positions[1]]),
-                  config['add_element'], config['add_class'],
-                  ''.join(text2[positions[2]:positions[3]]))
+        config['remove_element'], config['remove_class'],
+        ''.join(text1[positions[0]:positions[1]]),
+        config['add_element'], config['add_class'],
+        ''.join(text2[positions[2]:positions[3]])
+    )
     return replace_tag
 
 
 def create_delete_tag(text1, config, positions):
     delete_tag = '<{0} class="{1}">{2}</{0}>'.format(
-                 config['remove_element'], config['remove_class'],
-                 ''.join(text1[positions[0]:positions[1]]))
+        config['remove_element'], config['remove_class'],
+        ''.join(text1[positions[0]:positions[1]])
+    )
     return delete_tag
 
 
 def create_insert_tag(text2, config, positions):
     insert_tag = '<{0} class="{1}">{2}</{0}>'.format(
-                 config['add_element'], config['add_class'],
-                 ''.join(text2[positions[2]:positions[3]]))
+        config['add_element'], config['add_class'],
+        ''.join(text2[positions[2]:positions[3]])
+    )
     return insert_tag
 
 
@@ -45,8 +47,9 @@ def create_equal_tag(text2, config, positions):
         equal_tag = '{0}'.format(''.join(text2[positions[2]:positions[3]]))
     else:
         equal_tag = '<{0} class="{1}">{2}</{0}>'.format(
-                    config['moved_element'], config['moved_class'],
-                    ''.join(text2[positions[2]:positions[3]]))
+            config['moved_element'], config['moved_class'],
+            ''.join(text2[positions[2]:positions[3]])
+        )
     return equal_tag
 
 
